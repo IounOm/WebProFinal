@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" href="css\bootstrap.min.css">
     <link rel="stylesheet" href="css\circle-button.css">
-    <link rel="stylesheet" href="css\main.css">
     <script src="https://kit.fontawesome.com/90e71b4b68.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -20,7 +19,7 @@
             <div class="col order-lg-2 text-end me-4 me-lg-0">
                 <form>
                     <button type="button" class="btn btn-light btn-circle btn-circle-sm m-1 me-4"> <i class="fas fa-shopping-basket"></i> </button>
-                    <a class="btn btn-orange disabled" href="login.html" role="button"> 
+                    <a class="btn btn-orange" href="login.html" role="button"> 
                         <i class="fas fa-user me-1"></i> 
                         Sign In 
                     </a>
@@ -33,7 +32,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-lg-1">
                     <li class="nav-item">
-                        <a class="nav-link" href="chair.html">เก้าอี้</a>
+                        <a class="nav-link active" aria-current="page" href="#">เก้าอี้</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">ตู้</a>
@@ -46,33 +45,10 @@
         </div>
     </nav>
 
-    <!-- ================================= Login Field ================================= -->
+    <!-- ================================= Main Content ================================= -->
+    <div id="container">
+        <div id="fornitureInfo">
 
-    <div class="container login-container">
-        <div class="row">
-            <div class="col-12 col-lg-5">
-                <h1><strong>เข้าสู่ระบบบัญชี <br>OPEN HOUSE IDEA<br>ของคุณ</strong></h1>
-                <br>
-                <p>เข้าสู่ระบบหรือสมัครบัญชีผู้ใช้เว็บไซต์เพื่อดูช้อปปิ้งลิสต์หรือสินค้าในรถเข็นของคุณบนเว็บไซต์ OPEN HOUSE IDEA </p>
-                <a class="btn btn-outline-danger rounded-pill d-grid mt-5 fs-5 py-2" href="register.html" role="button"> สร้างบัญชี </a>
-            </div>
-            <div class="col-lg-2"></div>
-            <div class="col-12 col-lg-5 my-auto float-end">
-                <form>
-                    <div class="mb-4">
-                        <label for="inputEmail1" class="form-label">อีเมล</label>
-                        <input type="email" class="form-control" id="inputEmail1">
-                    </div>
-                    <div class="mb-5">
-                        <label for="inputPassword1" class="form-label">รหัสผ่าน</label>
-                        <input type="password" class="form-control" id="inputPassword1">
-                    </div>
-                    <div class="d-grid mt-5">
-                        <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">เข้าสู่ระบบ</button>
-                    </div>
-
-                  </form>
-            </div>
         </div>
     </div>
 
