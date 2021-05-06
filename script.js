@@ -1,7 +1,8 @@
 window.onload = pageLoad;
 
 function pageLoad(){
-	document.getElementById('showData').onclick = getData;
+	// document.getElementById('showData').onclick = getData;
+    document.getElementById('container') = getData;
 }
 
 async function getData(){
