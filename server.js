@@ -86,26 +86,10 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 
-// update data
-app.post("/updateDB",async (req,res) => {
-    let sql = `UPDATE ${tablename} SET email = '${req.body.email}' WHERE username = '${req.body.username}'`;
-    let result = await queryDB(sql);
-    console.log(result);
-    res.end("Record updated successfully");
-})
-
-// delete data
-app.post("/deleteDB",async (req,res) => {
-    let sql = `DELETE FROM ${tablename} WHERE username = '${req.body.username}'`;
-    let result = await queryDB(sql);
-    console.log(result);
-    res.end("Record deleted successfully");
-})
-
 // show data
 app.get("/showDB", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT id, username, email FROM ${tablename}`;
+    let sql = `SELECT furniture_name, size, wood, price, detail, remain FROM catagories`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
