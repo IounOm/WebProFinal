@@ -5,8 +5,8 @@ const port = 3001;
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
-// app.use(express.static(__dirname));
-app.use(express.static('public'));
+app.use(express.static(__dirname));
+// app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -28,7 +28,7 @@ con.connect(err => {
     }
 })
 
-let tablename = "members";
+// let tablename = "members";
 
 const queryDB = (sql) => {
     return new Promise((resolve,reject) => {
@@ -46,50 +46,50 @@ app.post("/addDB",async (req,res) => {
     //let sql = "CREATE TABLE IF NOT EXISTS userInfo (id INT AUTO_INCREMENT PRIMARY KEY, reg_date TIMESTAMP, username VARCHAR(255), email VARCHAR(100),password VARCHAR(100),img VARCHAR(100))";
     //let result = await queryDB(sql);
     let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.username}", "${req.body.email}", "${req.body.password}")`;
-    result = await queryDB(sql);
+    let result = await queryDB(sql);
     console.log("Register Complete");
     res.end("Register Complete");
 })
 
 // Login
 
-app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/login.html'));
-});
+// app.get('/', function(request, response) {
+// 	response.sendFile(path.join(__dirname + '/login.html'));
+// });
 
-app.post('/auth', function(request, response) {
-	var username = request.body.username;
-	var password = request.body.password;
-	if (username && password) {
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			if (results.length > 0) {
-				request.session.loggedin = true;
-				request.session.username = username;
-				response.redirect('/home');
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
+// app.post('/auth', function(request, response) {
+// 	var username = request.body.username;
+// 	var password = request.body.password;
+// 	if (username && password) {
+// 		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+// 			if (results.length > 0) {
+// 				request.session.loggedin = true;
+// 				request.session.username = username;
+// 				response.redirect('/home');
+// 			} else {
+// 				response.send('Incorrect Username and/or Password!');
+// 			}			
+// 			response.end();
+// 		});
+// 	} else {
+// 		response.send('Please enter Username and Password!');
+// 		response.end();
+// 	}
+// });
 
-app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
+// app.get('/home', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		response.send('Welcome back, ' + request.session.username + '!');
+// 	} else {
+// 		response.send('Please login to view this page!');
+// 	}
+// 	response.end();
+// });
 
 // show data
 app.get("/showDB", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT furniture_name, size, wood, price, detail, remain FROM catagories`;
+    let sql = `SELECT furniture_name, size, wood, price, detail FROM catagories`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
