@@ -3,10 +3,25 @@
 }
 
 .topBanner-container{
-    margin-top: 5rem;
-    
+    margin-top: 5rem;  
 }
 
 .topBanner-BGColor{
     background-color: #daccc1;
+}
+
+@media only screen and (max-width: 576px) {
+    .navbar-name{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .topBanner-container{
+        margin-top: 2rem;  
+    }
+
+    .navber-logo{
+        padding-left: 1rem;
+    }
 }
