@@ -45,10 +45,23 @@ const queryDB = (sql) => {
 app.post("/addDB",async (req,res) => {
     //let sql = "CREATE TABLE IF NOT EXISTS userInfo (id INT AUTO_INCREMENT PRIMARY KEY, reg_date TIMESTAMP, username VARCHAR(255), email VARCHAR(100),password VARCHAR(100),img VARCHAR(100))";
     //let result = await queryDB(sql);
-    let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.username}", "${req.body.email}", "${req.body.password}")`;
+    let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
     let result = await queryDB(sql);
     console.log(result);
     res.end("Register Complete");
+    // const username = req.body.regisUsername;
+    // const email = req.body.regisEmail;
+    // const password = req.body.regisPassword;
+    // con.query('INSERT INTO members (username, email, password) VALUES (?, ?, ?)', [username, email, password], (err, result) => {
+    //     if(err){ // เช็คว่าสามารถดึงข้อมูลจาก database ได้หรือไม่(กรณีเกิด error )
+    //         console.log(err);
+    //         res.status(500).send('While connect to db got an error ${err}');
+    //     }
+    //     else{
+    //         res.json(result); // return respones ค่า result เป็นเเบบ json (result คือข้อมูลจาก database)
+    //         // res.end("Register Complete");
+    //     }
+    // });
 })
 
 // Login

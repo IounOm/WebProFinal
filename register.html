@@ -60,15 +60,15 @@
                 <form action="/addDB" method="post" accept-charset="utf-8" class="form">
                     <div class="mb-4">
                         <label for="inputUsername" class="form-label">ชื่อผู้ใช้</label>
-                        <input type="text" class="form-control" id="inputUsername">
+                        <input type="text" class="form-control" id="inputUsername" name="regisUsername" required="required">
                     </div>
                     <div class="mb-4">
                         <label for="inputEmail2" class="form-label">อีเมล</label>
-                        <input type="email" class="form-control" id="inputEmail2">
+                        <input type="email" class="form-control" id="inputEmail2" name="regisEmail" required="required">
                     </div>
                     <div class="mb-5">
                         <label for="inputPassword2" class="form-label">รหัสผ่าน</label>
-                        <input type="password" class="form-control" id="inputPassword2">
+                        <input type="password" class="form-control" id="inputPassword2" name="regisPassword" required="required" pattern=".{6,}">
                     </div>
                     <div class="d-grid mt-5">
                         <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">สร้างโปรไฟล์</button>

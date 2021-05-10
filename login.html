@@ -61,11 +61,11 @@
                 <form>
                     <div class="mb-4">
                         <label for="inputEmail1" class="form-label">อีเมล</label>
-                        <input type="email" class="form-control" id="inputEmail1">
+                        <input type="email" class="form-control" id="inputEmail1" name="loginEmail" required="required">
                     </div>
                     <div class="mb-5">
                         <label for="inputPassword1" class="form-label">รหัสผ่าน</label>
-                        <input type="password" class="form-control" id="inputPassword1">
+                        <input type="password" class="form-control" id="inputPassword1" name="loginPassword" required="required" pattern=".{6,}">
                     </div>
                     <div class="d-grid mt-5">
                         <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">เข้าสู่ระบบ</button>
