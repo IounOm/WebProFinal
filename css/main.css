@@ -1,13 +1,21 @@
-.login-container{
-    margin-top: 10rem;
-}
-
 .topBanner-container{
-    margin-top: 5rem;  
+    margin-top: 4rem;  
 }
 
 .topBanner-BGColor{
     background-color: #daccc1;
+}
+
+.categories-container{
+    margin-bottom: 4rem;  
+}
+
+.next-button{
+    font-size: 2rem;
+}
+
+.login-container{
+    margin-top: 10rem;
 }
 
 @media only screen and (max-width: 576px) {
@@ -16,7 +24,7 @@
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
     .topBanner-container{
         margin-top: 2rem;  
     }
