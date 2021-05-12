@@ -1,12 +1,45 @@
-.login-container{
-    margin-top: 10rem;
-}
-
 .topBanner-container{
-    margin-top: 5rem;
-    
+    margin-top: 4rem;  
 }
 
 .topBanner-BGColor{
     background-color: #daccc1;
+}
+
+.chair-BGColor{
+    background-color: #957b64;
+    color: white;
+}
+
+.cabinet-BGColor{
+    background-color: #9fb6b0;
+}
+
+.table-BGColor{
+    background-color: #bf6737;
+    color: white;
+}
+
+.next-button{
+    font-size: 2rem;
+}
+
+.login-container{
+    margin-top: 10rem;
+}
+
+@media only screen and (max-width: 576px) {
+    .navbar-name{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .topBanner-container{
+        margin-top: 2rem;  
+    }
+
+    .navber-logo{
+        padding-left: 1rem;
+    }
 }
