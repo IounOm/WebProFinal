@@ -6,6 +6,20 @@
     background-color: #daccc1;
 }
 
+.chair-BGColor{
+    background-color: #957b64;
+    color: white;
+}
+
+.cabinet-BGColor{
+    background-color: #9fb6b0;
+}
+
+.table-BGColor{
+    background-color: #bf6737;
+    color: white;
+}
+
 .next-button{
     font-size: 2rem;
 }
