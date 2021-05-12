@@ -4,11 +4,22 @@ const hostname = 'localhost';
 const port = 3001;
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+var session = require('express-session');
 
 app.use(express.static(__dirname));
-// app.use(express.static('public'));
+// app.use(express.static('public')); // ไม่ได้ใช้
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+
 
 // ใส่ค่าตามที่เราตั้งไว้ใน mysql
 const con = mysql.createConnection({
@@ -20,6 +31,7 @@ const con = mysql.createConnection({
     // port:"3001",
     // multipleStatements: true
 })
+
 
 con.connect(err => {
     if(err) throw(err);
@@ -48,7 +60,10 @@ app.post("/addDB",async (req,res) => {
     let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
     let result = await queryDB(sql);
     console.log(result);
-    res.end("Register Complete");
+    // var alert = require('alert');
+    // alert("Register Complete");
+    res.redirect('/login.html');
+
     // const username = req.body.regisUsername;
     // const email = req.body.regisEmail;
     // const password = req.body.regisPassword;
@@ -70,34 +85,34 @@ app.post("/addDB",async (req,res) => {
 // 	response.sendFile(path.join(__dirname + '/login.html'));
 // });
 
-// app.post('/auth', function(request, response) {
-// 	var username = request.body.username;
-// 	var password = request.body.password;
-// 	if (username && password) {
-// 		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-// 			if (results.length > 0) {
-// 				request.session.loggedin = true;
-// 				request.session.username = username;
-// 				response.redirect('/home');
-// 			} else {
-// 				response.send('Incorrect Username and/or Password!');
-// 			}			
-// 			response.end();
-// 		});
-// 	} else {
-// 		response.send('Please enter Username and Password!');
-// 		response.end();
-// 	}
-// });
+app.post('/auth', function(request, response) {
+	var email = request.body.loginEmail;
+	var password = request.body.loginPassword;
+	if (email && password) {
+		con.query('SELECT * FROM members WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
+			if (results.length > 0) {
+				request.session.loggedin = true;
+				request.session.email = email;
+				response.redirect('/index.html');
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}			
+			response.end();
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
 
-// app.get('/home', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		response.send('Welcome back, ' + request.session.username + '!');
-// 	} else {
-// 		response.send('Please login to view this page!');
-// 	}
-// 	response.end();
-// });
+app.get('/home', function(request, response) {
+	if (request.session.loggedin) {
+		response.send('Welcome back, ' + request.session.email + '!');
+	} else {
+		response.send('Please login to view this page!');
+	}
+	response.end();
+});
 
 // show data
 app.get("/showDB", async (req,res) => {
