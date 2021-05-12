@@ -60,7 +60,10 @@ app.post("/addDB",async (req,res) => {
     let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
     let result = await queryDB(sql);
     console.log(result);
-    res.end("Register Complete");
+    // var alert = require('alert');
+    // alert("Register Complete");
+    res.redirect('/login.html');
+
     // const username = req.body.regisUsername;
     // const email = req.body.regisEmail;
     // const password = req.body.regisPassword;
