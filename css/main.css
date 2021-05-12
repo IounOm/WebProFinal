@@ -28,6 +28,10 @@
     margin-top: 10rem;
 }
 
+.footer-fixer{
+    min-height: calc(100vh - 56px - 26px);
+}
+
 @media only screen and (max-width: 576px) {
     .navbar-name{
         display: none;
