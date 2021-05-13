@@ -40,6 +40,14 @@ con.connect(err => {
     }
 })
 
+// con.connect(function(err) {
+//     if (err) throw err;
+//     con.query("SELECT furniture_name, size, wood, price, detail FROM catagories", function (err, result, fields) {
+//       if (err) throw err;
+//       console.log(result);
+//     });
+//   });
+
 // let tablename = "members";
 
 const queryDB = (sql) => {
@@ -117,12 +125,30 @@ app.get('/home', function(request, response) {
 // show data
 app.get("/showDB", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT furniture_name, size, wood, price, detail FROM catagories`;
+    let sql = `SELECT FID, furniture_name, size, wood, price, detail FROM catagories`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
     res.json(result);
-})
+});
+
+// app.get("/showDB", async (req,res) => {
+//     // let sql = `SELECT * FROM ${tablename}`;
+//     con.query("SELECT furniture_name, size, wood, price, detail FROM catagories", function (err, result, fields) {
+//               if (err) throw err;
+//               console.log(result);
+//             });
+// });
+
+app.post("/showDBcart", async (req,res) => {
+    // let sql = `SELECT * FROM ${tablename}`;
+    let getCartID = req.body.post;
+    let sql = `SELECT FID, furniture_name, size, wood, price, detail FROM catagories WHERE FID = ${getCartID}`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    console.log(result);
+    res.json(result);
+});
  
  app.listen(port, hostname, () => {
     console.log(`Server running at   http://${hostname}:${port}/`);
