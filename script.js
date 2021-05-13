@@ -4,7 +4,7 @@ function pageLoad(){
 	// document.getElementById('showData').onclick = getData;
     // document.getElementById('container') = getData;
     getData();
-    getBtnId();
+    // getBtnId();
 
 }
 async function getBtnId(){
@@ -61,19 +61,27 @@ function showData(data){
 
         showIDlayer.appendChild(container);
     }
+    document.getElementById("1").onclick = getToCart;
+    document.getElementById("2").onclick = getToCart;
+    document.getElementById("3").onclick = getToCart;
 }
 
 // button to cart
 
 async function getToCart(){
     var FID = document.getElementsByClassName("btnToCart").id;
+    // var FID = document.getElementById(i);
     console.log(FID);
 	writeCart(FID);
+
+    // const response = await fetch("\showDBcart");
+	// const content = await response.json();
+	// showDataCart(content);
 }
 
 async function writeCart(FID){
     console.log("Add furniture to cart");
-    const response = await fetch("/writeCart", {
+    const response = await fetch("/showDBcart", {
         method: "POST",
         headers:{
             'Accept':'application/json',
