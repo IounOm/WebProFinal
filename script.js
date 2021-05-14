@@ -7,19 +7,19 @@ function pageLoad(){
     // getBtnId();
 
 }
-async function getBtnId(){
-    document.getElementById("1").onclick = getToCart;
-    document.getElementById("2").onclick = getToCart;
-    document.getElementById("3").onclick = getToCart;
+// async function getBtnId(){
+//     document.getElementById("1").onclick = getToCart;
+//     document.getElementById("2").onclick = getToCart;
+//     document.getElementById("3").onclick = getToCart;
 
-    // var btnToCart = document.getElementsByClassName("btnToCart");
-    // // var btnToCart = document.querySelectorAll("[class^=btnToCart]");
-    // for(var i = 1; i < 19; i++){
-    //     btnToCart[i].onclick = getToCart;
-    //     // document.getElementById(i).onclick = getToCart;
-    // }
-    // console.log(btnToCart.length);
-}
+//     // var btnToCart = document.getElementsByClassName("btnToCart");
+//     // // var btnToCart = document.querySelectorAll("[class^=btnToCart]");
+//     // for(var i = 1; i < 19; i++){
+//     //     btnToCart[i].onclick = getToCart;
+//     //     // document.getElementById(i).onclick = getToCart;
+//     // }
+//     // console.log(btnToCart.length);
+// }
 
 
 async function getData(){
@@ -60,10 +60,10 @@ function showData(data){
         container.appendChild(cartBtn);
 
         showIDlayer.appendChild(container);
+
+        document.getElementById(data[keys[i]].FID).onclick = getToCart;
+        console.log(data[keys[i]].FID);
     }
-    document.getElementById("1").onclick = getToCart;
-    document.getElementById("2").onclick = getToCart;
-    document.getElementById("3").onclick = getToCart;
 }
 
 // button to cart
