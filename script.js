@@ -43,6 +43,8 @@ function showData(data){
         var cartBtn = document.createElement("button");
         cartBtn.className = "btnToCart";
         cartBtn.id = [data[keys[i]].FID];
+        // cartBtn.onclick = getToCart(this.id);
+        // cartBtn.attachEvent('OnClick',getToCart(this.id));
 
         furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
         size.innerHTML = "Size : " + data[keys[i]].size;
@@ -63,24 +65,30 @@ function showData(data){
 
         document.getElementById(data[keys[i]].FID).onclick = getToCart;
         console.log(data[keys[i]].FID);
+
+        // async function getToCart(clicked_id){
+        //     alert(this.id);
+        //     console.log(this.id);
+        // }
     }
 }
 
 // button to cart
 
-async function getToCart(){
-    var FID = document.getElementsByClassName("btnToCart").id;
-    // var FID = document.getElementById(i);
-    console.log(FID);
-	writeCart(FID);
-
+async function getToCart(clicked_id){
+    // var FID = document.getElementsById(showData(data));
+    // console.log(FID);
+	// writeCart(FID);
+    alert(this.id);
+    console.log(this.id);
+    writeCart(this.id);
     // const response = await fetch("\showDBcart");
 	// const content = await response.json();
 	// showDataCart(content);
 }
 
 async function writeCart(FID){
-    console.log("Add furniture to cart");
+    console.log("Add furniture to cart server");
     const response = await fetch("/showDBcart", {
         method: "POST",
         headers:{

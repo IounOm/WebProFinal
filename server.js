@@ -5,6 +5,7 @@ const port = 3001;
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 
 app.use(express.static(__dirname));
 // app.use(express.static('public')); // ไม่ได้ใช้
@@ -19,6 +20,7 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 
 // ใส่ค่าตามที่เราตั้งไว้ใน mysql
@@ -125,7 +127,7 @@ app.get('/home', function(request, response) {
 // show data
 app.get("/showDB", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT FID, furniture_name, size, wood, price, detail FROM catagories`;
+    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM catagories`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
@@ -143,8 +145,21 @@ app.get("/showDB", async (req,res) => {
 app.post("/showDBcart", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
     let getCartID = req.body.post;
-    let sql = `SELECT FID, furniture_name, size, wood, price, detail FROM catagories WHERE FID = ${getCartID}`;
+    let sql = `INSERT INTO cart (user_id, furniture_id, quantity) VALUES (${req.cookies.loginEmail}, ${getCartID}, 1)`;
     let result = await queryDB(sql);
+    sql = ` SELECT
+            ctg.furniture_pic,
+            ctg.furniture_name,
+            ctg.size,
+            ctg.wood,
+            ctg.price,
+            ctg.detail,
+            cart.quantity
+            FROM  OPEN_HOUSE_IDEA.catagories as ctg
+            INNER JOIN OPEN_HOUSE_IDEA.cart as cart
+            ON ctg.FID = cart.furniture_id;
+            WHERE FID = ${getCartID}`;
+    result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
     res.json(result);
