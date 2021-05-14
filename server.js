@@ -95,15 +95,33 @@ app.post("/addDB",async (req,res) => {
 // 	response.sendFile(path.join(__dirname + '/login.html'));
 // });
 
-app.post('/auth', function(request, response) {
-	var email = request.body.loginEmail;
-	var password = request.body.loginPassword;
+app.post('/auth', async function(request, response) {
+	let email = request.body.loginEmail;
+	let password = request.body.loginPassword;
+
+    let UID = `SELECT UID FROM members WHERE email = "${email}"`;
+    let result = await queryDB(UID);
+
 	if (email && password) {
 		con.query('SELECT * FROM members WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.email = email;
-				response.redirect('/index.html');
+
+                // const changeResult = JSON.parse(result);
+                // let res = JSON.parse(JSON.stringify(result));
+                // result = Object.values(JSON.parse(JSON.stringify(result)));
+                console.log(result[0].UID); //Promise { [ RowDataPacket { UID: 3 } ] }
+                
+                // result = JSON.stringify(result);
+                // console.log(result);
+                // result = JSON.parse(JSON.stringify(result));
+                // console.log(result);
+
+                response.cookie('UID', result[0].UID, 1);
+                response.cookie('email', email, 1);
+                // console.log(changeResult.UID);
+                return response.redirect('/index.html');
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
@@ -145,7 +163,9 @@ app.get("/showDB", async (req,res) => {
 app.post("/showDBcart", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
     let getCartID = req.body.post;
-    let sql = `INSERT INTO cart (user_id, furniture_id, quantity) VALUES (${req.cookies.loginEmail}, ${getCartID}, 1)`;
+    // let UID = req.cookies.UID;
+    console.log(getCartID);
+    let sql = `INSERT INTO cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
     let result = await queryDB(sql);
     sql = ` SELECT
             ctg.furniture_pic,
@@ -157,12 +177,36 @@ app.post("/showDBcart", async (req,res) => {
             cart.quantity
             FROM  OPEN_HOUSE_IDEA.catagories as ctg
             INNER JOIN OPEN_HOUSE_IDEA.cart as cart
-            ON ctg.FID = cart.furniture_id;
+            ON ctg.FID = cart.furniture_id
             WHERE FID = ${getCartID}`;
     result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
     res.json(result);
+
+    // con.query('INSERT INTO cart (user_id, furniture_id, quantity) VALUES (?, ?, 1)', [UID, getCartID], function(error, results, fields) {
+    //     if (results.length == 0) {
+    //         let sql = ` SELECT
+    //         ctg.furniture_pic,
+    //         ctg.furniture_name,
+    //         ctg.size,
+    //         ctg.wood,
+    //         ctg.price,
+    //         ctg.detail,
+    //         cart.quantity
+    //         FROM  OPEN_HOUSE_IDEA.catagories as ctg
+    //         INNER JOIN OPEN_HOUSE_IDEA.cart as cart
+    //         ON ctg.FID = cart.furniture_id
+    //         WHERE FID = ${getCartID}`;
+    //         let result = await queryDB(sql);
+    //         result = Object.assign({},result);
+    //         console.log(result);
+    //         res.json(result);
+    //     } else {
+    //         response.send('You are already add to cart');
+    //     }			
+    //     response.end();
+    // });
 });
  
  app.listen(port, hostname, () => {
