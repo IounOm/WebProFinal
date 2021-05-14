@@ -36,51 +36,28 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-lg-1">
                     <li class="nav-item">
-                        <a class="nav-link" href="chair.html">เก้าอี้</a>
+                        <a class="nav-link active" href="chair.html">เก้าอี้</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">ตู้</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="table.html">โต๊ะ</a>
+                        <a class="nav-link active" aria-current="page" href="#">โต๊ะ</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- ================================= Register Field ================================= -->
+    <!-- ================================= Main Content ================================= -->
+    
+    <div id="container">
+        <div id="fornitureInfo" class="row">
 
-    <div class="container login-container">
-        <div class="row">
-            <div class="col-12 col-lg-5">
-                <h1><strong>สร้างโปรไฟล์ <br>OPEN HOUSE IDEA<br></strong></h1>
-                <br>
-                <p>มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a></p>
-            </div>
-            <div class="col-lg-2"></div>
-            <div class="col-12 col-lg-5 my-auto float-end">
-                <form action="/addDB" method="post" accept-charset="utf-8" class="form">
-                    <div class="mb-4">
-                        <label for="inputUsername" class="form-label">ชื่อผู้ใช้</label>
-                        <input type="text" class="form-control" id="inputUsername" name="regisUsername" required="required">
-                    </div>
-                    <div class="mb-4">
-                        <label for="inputEmail2" class="form-label">อีเมล</label>
-                        <input type="email" class="form-control" id="inputEmail2" name="regisEmail" required="required">
-                    </div>
-                    <div class="mb-5">
-                        <label for="inputPassword2" class="form-label">รหัสผ่าน</label>
-                        <input type="password" class="form-control" id="inputPassword2" name="regisPassword" required="required" pattern=".{6,}">
-                    </div>
-                    <div class="d-grid mt-5">
-                        <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">สร้างโปรไฟล์</button>
-                    </div>
-                  </form>
-            </div>
         </div>
     </div>
 
     <script src="js\bootstrap.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
