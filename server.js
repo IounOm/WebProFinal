@@ -202,7 +202,16 @@ app.post("/addDBcart", async (req,res) => {
     let sql = `SELECT * FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
     let result = await queryDB(sql);
     if(result.length > 0){
-        alert('You are already add this furniture to cart');
+        // sql = `SELECT quantity FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
+        // result = await queryDB(sql);
+        // console.log(result);
+        sql = `UPDATE OPEN_HOUSE_IDEA.cart SET quantity= quantity + 1 WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`
+        result = await queryDB(sql);
+        sql = `SELECT quantity FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
+        result = await queryDB(sql);
+        console.log(result[0].quantity);
+        alert(`You are add ${result[0].quantity} furniture to cart`);
+        // alert('You are already add this furniture to cart');
     }
     else{
         sql = `INSERT INTO OPEN_HOUSE_IDEA.cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
