@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var alert = require('alert');
 
 app.use(express.static(__dirname));
 // app.use(express.static('public')); // ไม่ได้ใช้
@@ -67,7 +68,7 @@ const queryDB = (sql) => {
 app.post("/addDB",async (req,res) => {
     //let sql = "CREATE TABLE IF NOT EXISTS userInfo (id INT AUTO_INCREMENT PRIMARY KEY, reg_date TIMESTAMP, username VARCHAR(255), email VARCHAR(100),password VARCHAR(100),img VARCHAR(100))";
     //let result = await queryDB(sql);
-    let sql = `INSERT INTO members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
+    let sql = `INSERT INTO OPEN_HOUSE_IDEA.members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
     let result = await queryDB(sql);
     console.log(result);
     // var alert = require('alert');
@@ -99,11 +100,11 @@ app.post('/auth', async function(request, response) {
 	let email = request.body.loginEmail;
 	let password = request.body.loginPassword;
 
-    let UID = `SELECT UID FROM members WHERE email = "${email}"`;
+    let UID = `SELECT UID FROM OPEN_HOUSE_IDEA.members WHERE email = "${email}"`;
     let result = await queryDB(UID);
 
 	if (email && password) {
-		con.query('SELECT * FROM members WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
+		con.query('SELECT * FROM OPEN_HOUSE_IDEA.members WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.email = email;
@@ -145,7 +146,7 @@ app.get('/home', function(request, response) {
 // show data
 app.get("/showDB", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM catagories`;
+    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     console.log(result);
@@ -160,33 +161,45 @@ app.get("/showDB", async (req,res) => {
 //             });
 // });
 
-app.post("/showDBcart", async (req,res) => {
+// app.post("/showDBcart", async (req,res) => { // post เเบบเก่า สามารถเซฟสินค้าซ้ำกันได้
+//     // let sql = `SELECT * FROM ${tablename}`;
+//     let getCartID = req.body.post;
+//     // let UID = req.cookies.UID;
+//     console.log(getCartID);
+//     let sql = `INSERT INTO OPEN_HOUSE_IDEA.cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
+//     let result = await queryDB(sql);
+//     sql = ` SELECT
+//             ctg.furniture_pic,
+//             ctg.furniture_name,
+//             ctg.size,
+//             ctg.wood,
+//             ctg.price,
+//             ctg.detail,
+//             cart.quantity
+//             FROM  OPEN_HOUSE_IDEA.catagories as ctg
+//             INNER JOIN OPEN_HOUSE_IDEA.cart as cart
+//             ON ctg.FID = cart.furniture_id
+//             WHERE FID = ${getCartID}`;
+//     result = await queryDB(sql);
+//     result = Object.assign({},result);
+//     console.log(result);
+//     res.json(result);
+// });
+
+app.post("/getDBcart", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
     let getCartID = req.body.post;
-    // let UID = req.cookies.UID;
-    console.log(getCartID);
-    let sql = `INSERT INTO cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
+    // console.log(getCartID);
+    let sql = `SELECT * FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
     let result = await queryDB(sql);
-    sql = ` SELECT
-            ctg.furniture_pic,
-            ctg.furniture_name,
-            ctg.size,
-            ctg.wood,
-            ctg.price,
-            ctg.detail,
-            cart.quantity
-            FROM  OPEN_HOUSE_IDEA.catagories as ctg
-            INNER JOIN OPEN_HOUSE_IDEA.cart as cart
-            ON ctg.FID = cart.furniture_id
-            WHERE FID = ${getCartID}`;
-    result = await queryDB(sql);
-    result = Object.assign({},result);
-    console.log(result);
-    res.json(result);
-
-    // con.query('INSERT INTO cart (user_id, furniture_id, quantity) VALUES (?, ?, 1)', [UID, getCartID], function(error, results, fields) {
-    //     if (results.length == 0) {
-    //         let sql = ` SELECT
+    if(result.length > 0){
+        alert('You are already add this furniture to cart');
+    }
+    else{
+        sql = `INSERT INTO OPEN_HOUSE_IDEA.cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
+        result = await queryDB(sql);
+    }
+    // sql = ` SELECT
     //         ctg.furniture_pic,
     //         ctg.furniture_name,
     //         ctg.size,
@@ -198,15 +211,10 @@ app.post("/showDBcart", async (req,res) => {
     //         INNER JOIN OPEN_HOUSE_IDEA.cart as cart
     //         ON ctg.FID = cart.furniture_id
     //         WHERE FID = ${getCartID}`;
-    //         let result = await queryDB(sql);
-    //         result = Object.assign({},result);
-    //         console.log(result);
-    //         res.json(result);
-    //     } else {
-    //         response.send('You are already add to cart');
-    //     }			
-    //     response.end();
-    // });
+    // result = await queryDB(sql);
+    result = Object.assign({},result);
+    console.log(result);
+    res.json(result);
 });
  
  app.listen(port, hostname, () => {

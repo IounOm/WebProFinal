@@ -35,6 +35,7 @@ function showData(data){
         var container = document.createElement("div");
         container.className = "col-lg-4 bg-warning p-5";
 
+        var furniture_pic = document.createElement("img");
         var furniture_name = document.createElement("p");
         var size = document.createElement("p");
         var wood = document.createElement("p");
@@ -46,6 +47,7 @@ function showData(data){
         // cartBtn.onclick = getToCart(this.id);
         // cartBtn.attachEvent('OnClick',getToCart(this.id));
 
+        furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
         furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
         size.innerHTML = "Size : " + data[keys[i]].size;
         wood.innerHTML = "Wood : " + data[keys[i]].wood;
@@ -53,7 +55,7 @@ function showData(data){
         detail.innerHTML = "Detail : " + data[keys[i]].detail;
         cartBtn.innerHTML = "Buy " + data[keys[i]].FID;
 
-        
+        container.appendChild(furniture_pic);
         container.appendChild(furniture_name);
         container.appendChild(size);
         container.appendChild(wood);
@@ -79,7 +81,7 @@ async function getToCart(clicked_id){
     // var FID = document.getElementsById(showData(data));
     // console.log(FID);
 	// writeCart(FID);
-    alert(this.id);
+    // alert(this.id);
     console.log(this.id);
     writeCart(this.id);
     // const response = await fetch("\showDBcart");
@@ -89,7 +91,7 @@ async function getToCart(clicked_id){
 
 async function writeCart(FID){
     console.log("Add furniture to cart server");
-    const response = await fetch("/showDBcart", {
+    const response = await fetch("/getDBcart", {
         method: "POST",
         headers:{
             'Accept':'application/json',
@@ -100,7 +102,7 @@ async function writeCart(FID){
     })
     const content = await response.json();
     console.log(content);
-    showDataCart(content);
+    // showDataCart(content);
 }
 
 function showDataCart(data){
