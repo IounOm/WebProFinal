@@ -48,7 +48,7 @@ function showData(data){
     var keys = Object.keys(data);
     for(var i = 0; i < keys.length; i++){
         var container = document.createElement("div");
-        container.className = "col-lg-4 bg-warning p-5";
+        container.className = "col-lg-3 bg-warning p-5 m-1";
 
         var furniture_pic = document.createElement("img");
         var furniture_name = document.createElement("p");
@@ -132,6 +132,19 @@ function showDataCart(data){
         var wood = document.createElement("p");
         var price = document.createElement("p");
         var detail = document.createElement("p");
+        var inputQuantity = document.createElement("input");
+        inputQuantity.type = "number";
+        // inputQuantity.id = [data[keys[i]].FID];
+        inputQuantity.name = "inputQuantity";
+        inputQuantity.min = "1";
+        inputQuantity.max = "10";
+        
+        // var increaseQ = document.createElement("button");
+        // increaseQ.className = "btnUpdate";
+        // increaseQ.id = [data[keys[i]].FID];
+        // var decreaseQ = document.createElement("button");
+        // decreaseQ.className = "btnUpdate";
+        // decreaseQ.id = [data[keys[i]].FID];
 
         furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
         furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
@@ -139,6 +152,9 @@ function showDataCart(data){
         wood.innerHTML = "Wood : " + data[keys[i]].wood;
         price.innerHTML = "Price : " + data[keys[i]].price + " บาท";
         detail.innerHTML = "Detail : " + data[keys[i]].detail;
+        inputQuantity.value = "1";
+        // increaseQ.innerHTML = "+";
+        // decreaseQ.innerHTML = "-";
 
         container.appendChild(furniture_pic);
         container.appendChild(furniture_name);
@@ -146,6 +162,9 @@ function showDataCart(data){
         container.appendChild(wood);
         container.appendChild(price);
         container.appendChild(detail);
+        // container.appendChild(decreaseQ);
+        container.appendChild(inputQuantity);
+        // container.appendChild(increaseQ);
 
         showIDlayer.appendChild(container);
     }
