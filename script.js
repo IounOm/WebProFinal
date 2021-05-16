@@ -49,11 +49,11 @@ function showData(data){
 
         furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
         furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
-        size.innerHTML = "Size : " + data[keys[i]].size;
+        size.innerHTML = "Size : " + data[keys[i]].size + " ซม.";
         wood.innerHTML = "Wood : " + data[keys[i]].wood;
-        price.innerHTML = "Price : " + data[keys[i]].price;
+        price.innerHTML = "Price : " + data[keys[i]].price + " บาท";
         detail.innerHTML = "Detail : " + data[keys[i]].detail;
-        cartBtn.innerHTML = "Buy " + data[keys[i]].FID;
+        cartBtn.innerHTML = "Add to cart";
 
         container.appendChild(furniture_pic);
         container.appendChild(furniture_name);
