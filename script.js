@@ -3,7 +3,10 @@ window.onload = pageLoad;
 function pageLoad(){
 	// document.getElementById('showData').onclick = getData;
     // document.getElementById('container') = getData;
-    getData();
+    getDataChair();
+    getDataCabinet();
+    getDataTable();
+    getDataCart();
     // getBtnId();
 
 }
@@ -22,8 +25,20 @@ function pageLoad(){
 // }
 
 
-async function getData(){
-	const response = await fetch("\showDB");
+async function getDataChair(){
+	const response = await fetch("\showDBChair");
+	const content = await response.json();
+	showData(content);
+}
+
+async function getDataCabinet(){
+	const response = await fetch("\showDBCabinet");
+	const content = await response.json();
+	showData(content);
+}
+
+async function getDataTable(){
+	const response = await fetch("\showDBTable");
 	const content = await response.json();
 	showData(content);
 }
@@ -77,53 +92,55 @@ function showData(data){
 
 // button to cart
 
-async function getToCart(clicked_id){
-    // var FID = document.getElementsById(showData(data));
-    // console.log(FID);
-	// writeCart(FID);
-    // alert(this.id);
+async function getToCart(){
     console.log(this.id);
     writeCart(this.id);
-    // const response = await fetch("\showDBcart");
-	// const content = await response.json();
-	// showDataCart(content);
 }
 
 async function writeCart(FID){
     console.log("Add furniture to cart server");
-    const response = await fetch("/getDBcart", {
+    const response = await fetch("/addDBcart", {
         method: "POST",
         headers:{
             'Accept':'application/json',
             'Content-Type':'application/json'
         },
         body: JSON.stringify({
-        post:FID})
+        post:FID}) // ส่งค่า FID ไปให้ server.js
     })
-    const content = await response.json();
-    console.log(content);
+    // const content = await response.json(); // ไม่ได้ใช้เนื่องจากไม่จำเป็นต้องเอาค่าที่ได้ไปทำอะไร
+    // console.log(content);
     // showDataCart(content);
 }
 
+async function getDataCart(){
+	const response = await fetch("\showDBCart");
+	const content = await response.json();
+	showDataCart(content);
+}
+
 function showDataCart(data){
-	var showIDlayer = document.getElementById("cart");
+	var showIDlayer = document.getElementById("myCart");
     var keys = Object.keys(data);
+    for(var i = 0; i < keys.length; i++){
         var container = document.createElement("div");
         container.className = "col-lg-4 bg-warning p-5";
 
+        var furniture_pic = document.createElement("img");
         var furniture_name = document.createElement("p");
         var size = document.createElement("p");
         var wood = document.createElement("p");
         var price = document.createElement("p");
         var detail = document.createElement("p");
 
-        furniture_name.innerHTML = "Name : " + data[keys].furniture_name;
-        size.innerHTML = "Size : " + data[keys].size;
-        wood.innerHTML = "Wood : " + data[keys].wood;
-        price.innerHTML = "Price : " + data[keys].price;
-        detail.innerHTML = "Detail : " + data[keys].detail;
+        furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
+        furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
+        size.innerHTML = "Size : " + data[keys[i]].size + " ซม.";
+        wood.innerHTML = "Wood : " + data[keys[i]].wood;
+        price.innerHTML = "Price : " + data[keys[i]].price + " บาท";
+        detail.innerHTML = "Detail : " + data[keys[i]].detail;
 
-        
+        container.appendChild(furniture_pic);
         container.appendChild(furniture_name);
         container.appendChild(size);
         container.appendChild(wood);
@@ -131,4 +148,5 @@ function showDataCart(data){
         container.appendChild(detail);
 
         showIDlayer.appendChild(container);
+    }
 }

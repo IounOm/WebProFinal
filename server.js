@@ -112,7 +112,8 @@ app.post('/auth', async function(request, response) {
                 // const changeResult = JSON.parse(result);
                 // let res = JSON.parse(JSON.stringify(result));
                 // result = Object.values(JSON.parse(JSON.stringify(result)));
-                console.log(result[0].UID); //Promise { [ RowDataPacket { UID: 3 } ] }
+                
+                // console.log(result[0].UID); //Promise { [ RowDataPacket { UID: 3 } ] }
                 
                 // result = JSON.stringify(result);
                 // console.log(result);
@@ -144,12 +145,28 @@ app.get('/home', function(request, response) {
 });
 
 // show data
-app.get("/showDB", async (req,res) => {
+app.get("/showDBChair", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
-    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories`;
+    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories WHERE furniture_type = "chair"`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
-    console.log(result);
+    // console.log(result);
+    res.json(result);
+});
+app.get("/showDBCabinet", async (req,res) => {
+    // let sql = `SELECT * FROM ${tablename}`;
+    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories WHERE furniture_type = "cabinet"`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    // console.log(result);
+    res.json(result);
+});
+app.get("/showDBTable", async (req,res) => {
+    // let sql = `SELECT * FROM ${tablename}`;
+    let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories WHERE furniture_type = "table"`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    // console.log(result);
     res.json(result);
 });
 
@@ -186,7 +203,7 @@ app.get("/showDB", async (req,res) => {
 //     res.json(result);
 // });
 
-app.post("/getDBcart", async (req,res) => {
+app.post("/addDBcart", async (req,res) => {
     // let sql = `SELECT * FROM ${tablename}`;
     let getCartID = req.body.post;
     // console.log(getCartID);
@@ -198,6 +215,7 @@ app.post("/getDBcart", async (req,res) => {
     else{
         sql = `INSERT INTO OPEN_HOUSE_IDEA.cart (user_id, furniture_id, quantity) VALUES (${req.cookies.UID}, ${getCartID}, 1)`;
         result = await queryDB(sql);
+        alert('Add this furniture to cart');
     }
     // sql = ` SELECT
     //         ctg.furniture_pic,
@@ -207,13 +225,39 @@ app.post("/getDBcart", async (req,res) => {
     //         ctg.price,
     //         ctg.detail,
     //         cart.quantity
-    //         FROM  OPEN_HOUSE_IDEA.catagories as ctg
-    //         INNER JOIN OPEN_HOUSE_IDEA.cart as cart
-    //         ON ctg.FID = cart.furniture_id
-    //         WHERE FID = ${getCartID}`;
+    //         FROM  OPEN_HOUSE_IDEA.cart as cart
+    //         INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
+    //         ON cart.furniture_id = ctg.FID
+    //         INNER JOIN OPEN_HOUSE_IDEA.members as mem
+    //         ON cart.user_id = mem.UID
+    //         WHERE UID = ${req.cookies.UID};`;
     // result = await queryDB(sql);
+    // result = Object.assign({},result);
+    // console.log(result);
+    // res.json(result);
+
+    // let result = await queryDB(sql);
+});
+
+app.get("/showDBCart", async (req,res) => {
+    // let sql = `SELECT * FROM ${tablename}`;
+    let sql = ` SELECT
+            ctg.furniture_pic,
+            ctg.furniture_name,
+            ctg.size,
+            ctg.wood,
+            ctg.price,
+            ctg.detail,
+            cart.quantity
+            FROM  OPEN_HOUSE_IDEA.cart as cart
+            INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
+            ON cart.furniture_id = ctg.FID
+            INNER JOIN OPEN_HOUSE_IDEA.members as mem
+            ON cart.user_id = mem.UID
+            WHERE UID = ${req.cookies.UID};`;
+    let result = await queryDB(sql);
     result = Object.assign({},result);
-    console.log(result);
+    // console.log(result);
     res.json(result);
 });
  
