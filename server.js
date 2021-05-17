@@ -298,7 +298,6 @@ app.post("/paid",async (req,res) => {
 // adminAddFurniture.html
 app.post('/addFurniture', (req,res) => {
     let upload = multer({ storage: storage, fileFilter: imageFilter }).single('addPic');
-
     upload(req, res, (err) => {
         if (req.fileValidationError) {
             return res.send(req.fileValidationError);
@@ -337,7 +336,7 @@ const insertDataFurniture = async (filename, furType, furName, furSize, furWood,
 
     let sql = `INSERT OPEN_HOUSE_IDEA.catagories
     (furniture_type, furniture_pic, furniture_name, size, wood, price, detail) VALUES
-    (${furType}, ${filename}, ${furName}, ${furSize}, ${furWood}, ${furPrice}, ${furDetail})`
+    ("${furType}", "${filename}", "${furName}", "${furSize}", "${furWood}", ${furPrice}, "${furDetail}")`
     let result = await queryDB(sql);
     console.log(result);
     
