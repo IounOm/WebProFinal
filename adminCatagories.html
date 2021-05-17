@@ -57,6 +57,17 @@
             <div class="col" id="myCatagories">
 
             </div>
+            <form action="/deleteCatagories" method="post" accept-charset="utf-8" class="form">
+                <div class="mb-4">
+                    <div class="d-grid mt-5">
+                        <label for="deleteDataCatagories" class="form-label">furnitureID (FID) ที่ต้องการลบออกจากระบบ</label>
+                        <input type="number" class="form-control" id="deleteCatagoriesID" name="deleteFID" min="1" required="required">
+                    </div>
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">ลบสินค้า</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
