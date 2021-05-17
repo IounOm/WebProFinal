@@ -278,7 +278,17 @@ app.post("/paid",async (req,res) => {  //สำหรับอัพเดตจ
     // console.log(result);
     res.redirect('/index.html');
 })
- 
+
+/////////////////////////// admin ///////////////////////////
+
+app.get("/showDBCatagories", async (req,res) => {
+    let sql = `SELECT * FROM OPEN_HOUSE_IDEA.catagories`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    // console.log(result);
+    res.json(result);
+});
+
  app.listen(port, hostname, () => {
     console.log(`Server running at   http://${hostname}:${port}/`);
 });
