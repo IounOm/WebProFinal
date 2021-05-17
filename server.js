@@ -7,12 +7,36 @@ const mysql = require('mysql');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var alert = require('alert');
+const multer = require('multer');
+const path = require('path');
 
 app.use(express.static(__dirname));
 // app.use(express.static('public')); // ไม่ได้ใช้
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: false}));
+
+///////////////////////////////////////////////////////////
+// สำหรับ upload file ภาพ
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, 'furniturePic/');
+    },
+
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  });
+
+const imageFilter = (req, file, cb) => {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+        req.fileValidationError = 'Only image files are allowed!';
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+///////////////////////////////////////////////////////////
 
 app.use(session({
 	secret: 'secret',
@@ -22,7 +46,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
 
 // ใส่ค่าตามที่เราตั้งไว้ใน mysql
 const con = mysql.createConnection({
@@ -42,16 +65,6 @@ con.connect(err => {
         console.log("MySQL connected");
     }
 })
-
-// con.connect(function(err) {
-//     if (err) throw err;
-//     con.query("SELECT furniture_name, size, wood, price, detail FROM catagories", function (err, result, fields) {
-//       if (err) throw err;
-//       console.log(result);
-//     });
-//   });
-
-// let tablename = "members";
 
 const queryDB = (sql) => {
     return new Promise((resolve,reject) => {
@@ -73,6 +86,7 @@ app.post("/addDB",async (req,res) => {
     alert("Register Complete");
     res.redirect('/login.html');
 
+    // การเขียนโค้ดอีกเเบบหนึ่ง ใช้ได้เหมือนกับโค้ดด้านบน
     // const username = req.body.regisUsername;
     // const email = req.body.regisEmail;
     // const password = req.body.regisPassword;
@@ -94,6 +108,8 @@ app.post("/addDB",async (req,res) => {
 // 	response.sendFile(path.join(__dirname + '/login.html'));
 // });
 
+///////////////////////////////////////////////////////////
+// เช็ดการ login
 app.post('/auth', async function(request, response) {
 	let email = request.body.loginEmail;
 	let password = request.body.loginPassword;
@@ -142,6 +158,7 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 
+///////////////////////////////////////////////////////////
 // show data
 app.get("/showDBChair", async (req,res) => {
     let sql = `SELECT FID,  furniture_pic, furniture_name, size, wood, price, detail FROM OPEN_HOUSE_IDEA.catagories WHERE furniture_type = "chair"`;
@@ -165,14 +182,8 @@ app.get("/showDBTable", async (req,res) => {
     res.json(result);
 });
 
-// app.get("/showDB", async (req,res) => {
-//     con.query("SELECT furniture_name, size, wood, price, detail FROM catagories", function (err, result, fields) {
-//               if (err) throw err;
-//               console.log(result);
-//             });
-// });
-
-// app.post("/showDBcart", async (req,res) => { // post เเบบเก่า สามารถเซฟสินค้าซ้ำกันได้
+// post เเบบเก่า สามารถเซฟสินค้าซ้ำกันได้
+// app.post("/showDBcart", async (req,res) => {
 //     let getCartID = req.body.post;
 //     // let UID = req.cookies.UID;
 //     console.log(getCartID);
@@ -195,7 +206,8 @@ app.get("/showDBTable", async (req,res) => {
 //     console.log(result);
 //     res.json(result);
 // });
-
+///////////////////////////////////////////////////////////
+// insert สินค้าลง cart, update quantity เมื่อมีการกดสินค้าอีกรอบ
 app.post("/addDBcart", async (req,res) => {
     let getCartID = req.body.post;
     // console.log(getCartID);
@@ -239,30 +251,32 @@ app.post("/addDBcart", async (req,res) => {
 
     // let result = await queryDB(sql);
 });
-
+///////////////////////////////////////////////////////////
+// โชสินค้าในหน้า cart ตาม UID ที่ล็อคอินเข้ามา
 app.get("/showDBCart", async (req,res) => {
     let sql = ` SELECT
-            ctg.FID,
-            ctg.furniture_pic,
-            ctg.furniture_name,
-            ctg.size,
-            ctg.wood,
-            ctg.price,
-            ctg.detail,
-            cart.quantity
-            FROM  OPEN_HOUSE_IDEA.cart as cart
-            INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
-            ON cart.furniture_id = ctg.FID
-            INNER JOIN OPEN_HOUSE_IDEA.members as mem
-            ON cart.user_id = mem.UID
-            WHERE UID = ${req.cookies.UID};`;
+                ctg.FID,
+                ctg.furniture_pic,
+                ctg.furniture_name,
+                ctg.size,
+                ctg.wood,
+                ctg.price,
+                ctg.detail,
+                cart.quantity
+                FROM  OPEN_HOUSE_IDEA.cart as cart
+                INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
+                ON cart.furniture_id = ctg.FID
+                INNER JOIN OPEN_HOUSE_IDEA.members as mem
+                ON cart.user_id = mem.UID
+                WHERE UID = ${req.cookies.UID};`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
     // console.log(result);
     res.json(result);
 });
-
-// app.post("/updateDBCart",async (req,res) => {  //สำหรับอัพเดตจำนวนสินค้าหลังจากกดปุ่มยืนยันการชำระเงิน
+///////////////////////////////////////////////////////////
+//สำหรับอัพเดตจำนวนสินค้าหลังจากกดปุ่มยืนยันการชำระเงิน
+// app.post("/updateDBCart",async (req,res) => {
 //     let furnitureID = req.body.post;
 //     let sql = ` UPDATE OPEN_HOUSE_IDEA.cart
 //                 SET quantity= ${req.body.inputQuantityID}
@@ -271,8 +285,9 @@ app.get("/showDBCart", async (req,res) => {
 //     console.log(result);
 //     res.redirect('/login.html');
 // })
-
-app.post("/paid",async (req,res) => {  //สำหรับอัพเดตจำนวนสินค้าหลังจากกดปุ่มยืนยันการชำระเงิน
+///////////////////////////////////////////////////////////
+//จัดการของใน cart หลังจากกดปุ่มยืนยันการชำระเงิน
+app.post("/paid",async (req,res) => {
     let sql = ` DELETE FROM OPEN_HOUSE_IDEA.cart WHERE user_id = ${req.cookies.UID}`;
     let result = await queryDB(sql);
     // console.log(result);
@@ -280,7 +295,40 @@ app.post("/paid",async (req,res) => {  //สำหรับอัพเดตจ
 })
 
 /////////////////////////// admin ///////////////////////////
+// adminAddFurniture.html
+app.post('/addFurniture', (req,res) => {
+    let upload = multer({ storage: storage, fileFilter: imageFilter }).single('fur');
+    let user = req.cookies.username
 
+    upload(req, res, (err) => {
+        if (req.fileValidationError) {
+            return res.send(req.fileValidationError);
+        }
+        else if (!req.file) {
+            return res.send('Please select an image to upload');
+        }
+        else if (err instanceof multer.MulterError) {
+            return res.send(err);
+        }
+        else if (err) {
+            return res.send(err);
+        }
+        let filename = req.file.filename
+        updateImg(user, filename).then(()=>{
+            console.log(filename)
+            res.cookie('img', filename)
+            console.log('Change Complete')
+            return res.redirect('feed.html')
+        })
+    })
+})
+
+const updateImg = async (username, filen) => {
+    let sql = `UPDATE userInfo SET img = '${filen}' WHERE username = '${username}'`;
+    let result = await queryDB(sql);
+}
+
+// adminCatagories.html
 app.get("/showDBCatagories", async (req,res) => {
     let sql = `SELECT * FROM OPEN_HOUSE_IDEA.catagories`;
     let result = await queryDB(sql);
