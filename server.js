@@ -81,7 +81,7 @@ const queryDB = (sql) => {
 app.post("/addDB",async (req,res) => {
     let sql = `INSERT INTO OPEN_HOUSE_IDEA.members (username, email, password) VALUES ("${req.body.regisUsername}", "${req.body.regisEmail}", "${req.body.regisPassword}")`;
     let result = await queryDB(sql);
-    console.log(result);
+    // console.log(result);
     // var alert = require('alert');
     alert("Register Complete");
     res.redirect('/login.html');
@@ -297,14 +297,14 @@ app.post("/paid",async (req,res) => {
 /////////////////////////// admin ///////////////////////////
 // adminAddFurniture.html
 app.post('/addFurniture', (req,res) => {
-    let upload = multer({ storage: storage, fileFilter: imageFilter }).single('fur');
-    let user = req.cookies.username
-
+    let upload = multer({ storage: storage, fileFilter: imageFilter }).single('addPic');
     upload(req, res, (err) => {
         if (req.fileValidationError) {
             return res.send(req.fileValidationError);
         }
         else if (!req.file) {
+            console.log(upload);
+            console.log(req.file);
             return res.send('Please select an image to upload');
         }
         else if (err instanceof multer.MulterError) {
@@ -313,19 +313,33 @@ app.post('/addFurniture', (req,res) => {
         else if (err) {
             return res.send(err);
         }
-        let filename = req.file.filename
-        updateImg(user, filename).then(()=>{
-            console.log(filename)
-            res.cookie('img', filename)
-            console.log('Change Complete')
-            return res.redirect('feed.html')
+        let filename = req.file.filename;
+        
+        let furType = req.body.addType;
+        let furName = req.body.addName;
+        let furSize = req.body.addSize;
+        let furWood = req.body.addWood;
+        let furPrice = req.body.addPrice;
+        let furDetail = req.body.addDetail;
+        insertDataFurniture(filename, furType, furName, furSize, furWood, furPrice, furDetail).then(()=>{
+            console.log(filename);
+            res.cookie('img', filename);
+            console.log('Add furniture Complete');
+            return res.redirect('adminAddFurniture.html');
         })
     })
 })
 
-const updateImg = async (username, filen) => {
-    let sql = `UPDATE userInfo SET img = '${filen}' WHERE username = '${username}'`;
+const insertDataFurniture = async (filename, furType, furName, furSize, furWood, furPrice, furDetail) => {
+    // let sql = `UPDATE userInfo SET img = '${filen}' WHERE username = '${username}'`;
+    // let result = await queryDB(sql);
+
+    let sql = `INSERT OPEN_HOUSE_IDEA.catagories
+    (furniture_type, furniture_pic, furniture_name, size, wood, price, detail) VALUES
+    ("${furType}", "${filename}", "${furName}", "${furSize}", "${furWood}", ${furPrice}, "${furDetail}")`
     let result = await queryDB(sql);
+    console.log(result);
+    
 }
 
 // adminCatagories.html
@@ -335,6 +349,14 @@ app.get("/showDBCatagories", async (req,res) => {
     result = Object.assign({},result);
     // console.log(result);
     res.json(result);
+});
+
+app.post("/deleteCatagories", async (req,res) => {
+    let sql = `DELETE FROM OPEN_HOUSE_IDEA.catagories WHERE FID = '${req.body.deleteFID}'`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    // console.log(result);
+    res.json(`You are delete furniture ID ${req.body.deleteFID}`);
 });
 
  app.listen(port, hostname, () => {
