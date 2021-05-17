@@ -51,7 +51,7 @@ app.use(cookieParser());
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Ioun12646@",
+    password: "",
     database: "OPEN_HOUSE_IDEA",
     // socketPath: '/var/run/mysqld/mysqld.sock',
     // port:"3001",

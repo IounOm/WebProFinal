@@ -36,13 +36,13 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-lg-1">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">เพิ่มสินค้า</a>
+                        <a class="nav-link" href="adminAddFurniture.html">เพิ่มสินค้า</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="adminCatagories.html">รายการสินค้า</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="adminOrderList.html">รายการสั่งซื้อ</a>
+                        <a class="nav-link active" aria-current="page" href="#">รายการสั่งซื้อ</a>
                     </li>
                 </ul>
             </div>
@@ -52,59 +52,10 @@
     <!-- ================================= Main Content ================================= -->
     
     <div class="container topBanner-container">
-        <div class="row">
-            <div class="col-12 col-lg-5">
-                <h2 class="mb-4">เพิ่มสินค้า</h2>
-            </div>
-            <div class="col-lg-2"></div>
-            <div class="col-12 col-lg-5 my-auto float-end">
-                <form action="/addFurniture" method="post" accept-charset="utf-8" class="form">
-                    <div class="mb-4">
-                        <label for="inputEmail1" class="form-label">รูปสินค้า</label>
-                        <input type="file" class="form-control" id="addFilePic" name="addPic" required="required">
-                    </div>
+        <div class="footer-fixer">
+            <h2 class="mb-4">รายการสั่งซื้อ</h2>
+            <div class="col" id="myOrderList">
 
-                    <div class="mb-5">
-                        <label for="inputFurnitureType" class="form-label">ประเภทสินค้า</label>
-                        <input type="radio" id="addChairType" name="addType" value="chair" required="required">
-                        <label for="addChairType">chair</label>
-                        <input type="radio" id="addCabinetType" name="addType" value="cabinet" required="required">
-                        <label for="addCabinetType">cabinet</label>
-                        <input type="radio" id="addTableType" name="addType" value="table" required="required">
-                        <label for="addTableType">table</label>
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="inputFurnitureName" class="form-label">ชื่อสินค้า</label>
-                        <input type="text" class="form-control" id="addFurnitureName" name="addName" required="required">
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="inputFurnitureSize" class="form-label">ขนาด (กว้างxยาวxสูง) ซม.</label>
-                        <input type="text" class="form-control" id="addFurnitureSize" name="addSize" required="required">
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="inputFurnitureWood" class="form-label">เนื้อไม้</label>
-                        <input type="text" class="form-control" id="addFurnitureWood" name="addWood" required="required">
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="inputFurniturePrice" class="form-label">ราคา (บาท)</label>
-                        <input type="number" class="form-control" id="addFurniturePrice" name="addPrice" min="1" required="required">
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="inputFurnitureDetail" class="form-label">รายละเอียดสินค้า</label>
-                        <textarea class="form-control" name="addDetail" id="addFurnitureDetail" cols="30" rows="10" required="required"></textarea>
-                        <!-- <input type="text" class="form-control" id="addFurnitureDetail" name="addDetail" required="required"> -->
-                    </div>
-
-                    <div class="d-grid mt-5">
-                        <button type="submit" class="btn btn-orange rounded-pill fs-5 py-2">เพิ่มสินค้าลงขาย</button>
-                    </div>
-
-                  </form>
             </div>
         </div>
     </div>
