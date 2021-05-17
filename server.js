@@ -221,7 +221,7 @@ app.post("/addDBcart", async (req,res) => {
         result = await queryDB(sql);
         sql = `SELECT quantity FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
         result = await queryDB(sql);
-        console.log(result[0].quantity);
+        // console.log(result[0].quantity);
         alert(`You are add ${result[0].quantity} furniture to cart`);
         // alert('You are already add this furniture to cart');
     }
@@ -288,9 +288,51 @@ app.get("/showDBCart", async (req,res) => {
 ///////////////////////////////////////////////////////////
 //จัดการของใน cart หลังจากกดปุ่มยืนยันการชำระเงิน
 app.post("/paid",async (req,res) => {
-    let sql = ` DELETE FROM OPEN_HOUSE_IDEA.cart WHERE user_id = ${req.cookies.UID}`;
+    let sql = ` SELECT
+                mem.UID,
+                SUM(price*quantity) as total_price
+                FROM  OPEN_HOUSE_IDEA.cart as cart
+                INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
+                ON cart.furniture_id = ctg.FID
+                INNER JOIN OPEN_HOUSE_IDEA.members as mem
+                ON cart.user_id = mem.UID
+                WHERE UID = ${req.cookies.UID}`;
     let result = await queryDB(sql);
-    // console.log(result);
+    let UID = result[0].UID;
+    let total_price = result[0].total_price;
+    // console.log(result[0].UID);
+    // console.log(result[0].total_price);
+    sql = `INSERT OPEN_HOUSE_IDEA.orders(user_id, total) VALUES (${UID}, ${total_price})`;
+    result = await queryDB(sql);
+    let order_id = result.insertId;
+    sql = ` SELECT
+            ctg.FID,
+            ctg.furniture_name,
+            ctg.price,
+            cart.quantity
+            FROM  OPEN_HOUSE_IDEA.cart as cart
+            INNER JOIN OPEN_HOUSE_IDEA.catagories as ctg
+            ON cart.furniture_id = ctg.FID
+            INNER JOIN OPEN_HOUSE_IDEA.members as mem
+            ON cart.user_id = mem.UID
+            WHERE UID = ${UID}`;
+    result = await queryDB(sql);
+    console.log(result.length);
+    for(let i=0; i< result.length; i++){
+        let FID = result[i].FID;
+        let furniture_name = result[i].furniture_name;
+        let price = result[i].price;
+        let quantity = result[i].quantity;
+        sql = ` INSERT OPEN_HOUSE_IDEA.orders_detail
+                (furniture_id, furniture_name, furniture_price, quantity, order_id) VALUES
+                (${FID}, "${furniture_name}", ${price}, ${quantity}, ${order_id})`;
+        results = await queryDB(sql);
+        // console.log(results);
+    }
+    sql = ` DELETE FROM OPEN_HOUSE_IDEA.cart WHERE user_id = ${req.cookies.UID}`;
+    result = await queryDB(sql);
+    console.log(result);
+    alert("You have successfully placed an order");
     res.redirect('/index.html');
 })
 
@@ -322,7 +364,7 @@ app.post('/addFurniture', (req,res) => {
         let furPrice = req.body.addPrice;
         let furDetail = req.body.addDetail;
         insertDataFurniture(filename, furType, furName, furSize, furWood, furPrice, furDetail).then(()=>{
-            console.log(filename);
+            // console.log(filename);
             res.cookie('img', filename);
             console.log('Add furniture Complete');
             return res.redirect('adminAddFurniture.html');
@@ -331,15 +373,11 @@ app.post('/addFurniture', (req,res) => {
 })
 
 const insertDataFurniture = async (filename, furType, furName, furSize, furWood, furPrice, furDetail) => {
-    // let sql = `UPDATE userInfo SET img = '${filen}' WHERE username = '${username}'`;
-    // let result = await queryDB(sql);
-
     let sql = `INSERT OPEN_HOUSE_IDEA.catagories
     (furniture_type, furniture_pic, furniture_name, size, wood, price, detail) VALUES
     ("${furType}", "${filename}", "${furName}", "${furSize}", "${furWood}", ${furPrice}, "${furDetail}")`
     let result = await queryDB(sql);
-    console.log(result);
-    
+    // console.log(result);
 }
 
 // adminCatagories.html
@@ -358,6 +396,9 @@ app.post("/deleteCatagories", async (req,res) => {
     // console.log(result);
     res.json(`You are delete furniture ID ${req.body.deleteFID}`);
 });
+
+// adminOrderList.html
+
 
  app.listen(port, hostname, () => {
     console.log(`Server running at   http://${hostname}:${port}/`);
