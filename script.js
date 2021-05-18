@@ -65,7 +65,7 @@ function showData(data){
     var keys = Object.keys(data);
     for(var i = 0; i < keys.length; i++){
         var container = document.createElement("div");
-        container.className = "col-lg-3 bg-warning p-5 m-1";
+        container.className = "col col-lg-4 p-5 text-center bg-warning";
 
         var furniture_pic = document.createElement("img");
         var furniture_name = document.createElement("p");
