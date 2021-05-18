@@ -269,6 +269,7 @@ app.get("/showDBCart", async (req,res) => {
                 ctg.furniture_name,
                 ctg.size,
                 ctg.wood,
+                price * quantity as totalPrice,
                 ctg.price,
                 ctg.detail,
                 cart.quantity
@@ -282,6 +283,13 @@ app.get("/showDBCart", async (req,res) => {
     result = Object.assign({},result);
     // console.log(result);
     res.json(result);
+});
+
+app.post("/deleteFur", async (req,res) => {
+    let getCartID = req.body.post;
+    let sql = `DELETE FROM OPEN_HOUSE_IDEA.cart WHERE furniture_id = ${getCartID} AND user_id = ${req.cookies.UID}`;
+    let result = await queryDB(sql);
+    // console.log(result);
 });
 ///////////////////////////////////////////////////////////
 //สำหรับอัพเดตจำนวนสินค้าหลังจากกดปุ่มยืนยันการชำระเงิน
@@ -326,7 +334,7 @@ app.post("/paid",async (req,res) => {
             ON cart.user_id = mem.UID
             WHERE UID = ${UID}`;
     result = await queryDB(sql);
-    console.log(result.length);
+    // console.log(result.length);
     for(let i=0; i< result.length; i++){
         let FID = result[i].FID;
         let furniture_name = result[i].furniture_name;
@@ -340,7 +348,7 @@ app.post("/paid",async (req,res) => {
     }
     sql = ` DELETE FROM OPEN_HOUSE_IDEA.cart WHERE user_id = ${req.cookies.UID}`;
     result = await queryDB(sql);
-    console.log(result);
+    // console.log(result);
     alert("You have successfully placed an order");
     res.redirect('/index.html');
 })
@@ -386,6 +394,7 @@ const insertDataFurniture = async (filename, furType, furName, furSize, furWood,
     (furniture_type, furniture_pic, furniture_name, size, wood, price, detail) VALUES
     ("${furType}", "${filename}", "${furName}", "${furSize}", "${furWood}", ${furPrice}, "${furDetail}")`
     let result = await queryDB(sql);
+    alert("Add furniture to website");
     // console.log(result);
 }
 
@@ -403,7 +412,8 @@ app.post("/deleteCatagories", async (req,res) => {
     let result = await queryDB(sql);
     result = Object.assign({},result);
     // console.log(result);
-    res.json(`You are delete furniture ID ${req.body.deleteFID}`);
+    alert(`You are delete furniture ID ${req.body.deleteFID}`);
+    // res.json(`You are delete furniture ID ${req.body.deleteFID}`);
 });
 
 // adminOrderList.html
@@ -411,7 +421,7 @@ app.get("/orderList", async (req,res) => {
     let sql = `SELECT * FROM OPEN_HOUSE_IDEA.orders`;
     let result = await queryDB(sql);
     result = Object.assign({},result);
-    console.log(result);
+    // console.log(result);
     res.json(result);
 });
 app.get("/orderDetail", async (req,res) => {
