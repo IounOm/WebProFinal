@@ -137,6 +137,7 @@ app.post('/auth', async function(request, response) {
                 response.cookie('UID', result[0].UID, 1);
                 response.cookie('email', email, 1);
                 // console.log(changeResult.UID);
+                // response.json(result[0].UID);
                 return response.redirect('/index.html');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -157,6 +158,14 @@ app.get('/home', function(request, response) {
 	}
 	response.end();
 });
+
+app.get('/logout', (req,res) => {
+    res.clearCookie('UID');
+    res.clearCookie('email');
+    res.clearCookie('img');
+    console.log("Log out");
+    return res.redirect('login.html');
+})
 
 ///////////////////////////////////////////////////////////
 // show data
