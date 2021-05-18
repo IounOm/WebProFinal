@@ -48,35 +48,52 @@ function showData(data){
     var keys = Object.keys(data);
     for(var i = 0; i < keys.length; i++){
         var container = document.createElement("div");
-        container.className = "col col-lg-4 p-5 text-center bg-warning";
+        container.className = "col-12 col-lg-4 py-2 text-center";
+        var containerItem = document.createElement("div");
+        containerItem.className = "bg-light pt-5 pt-lg-0 pt-xl-5 pb-5";
+        var containerDetail = document.createElement("div");
+        containerDetail.className = "mt-4 p-4 text-start";
+        var containerButton = document.createElement("div");
+        containerButton.className = "d-grid px-4";
 
         var furniture_pic = document.createElement("img");
-        var furniture_name = document.createElement("p");
+        furniture_pic.className = "img-fluid";
+        var furniture_name = document.createElement("h2");
+        furniture_name.className = "pb-2 boldText";
         var size = document.createElement("p");
         var wood = document.createElement("p");
-        var price = document.createElement("p");
+        var price = document.createElement("h3");
+        price.className = "boldText";
+        var detailLable = document.createElement("p");
+        detailLable.className = "mb-0 pb-0";
         var detail = document.createElement("p");
+
         var cartBtn = document.createElement("button");
-        cartBtn.className = "btnToCart";
+        cartBtn.className = "btn btn-orange";
         cartBtn.id = [data[keys[i]].FID];
         // cartBtn.onclick = getToCart(this.id);
         // cartBtn.attachEvent('OnClick',getToCart(this.id));
 
         furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
-        furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
-        size.innerHTML = "Size : " + data[keys[i]].size + " ซม.";
-        wood.innerHTML = "Wood : " + data[keys[i]].wood;
-        price.innerHTML = "Price : " + data[keys[i]].price + " บาท";
-        detail.innerHTML = "Detail : " + data[keys[i]].detail;
-        cartBtn.innerHTML = "Add to cart";
+        furniture_name.innerHTML = data[keys[i]].furniture_name;
+        size.innerHTML = "ขนาด : " + data[keys[i]].size + " ซม.";
+        wood.innerHTML = "เนื้อไม้ : " + data[keys[i]].wood;
+        price.innerHTML = data[keys[i]].price + " บาท";
+        detailLable.innerHTML = "รายละเอียดเพิ่มเติม :";
+        detail.innerHTML = data[keys[i]].detail;
+        cartBtn.innerHTML = "เพิ่มสินค้าลงตะกร้า";
 
-        container.appendChild(furniture_pic);
-        container.appendChild(furniture_name);
-        container.appendChild(size);
-        container.appendChild(wood);
-        container.appendChild(price);
-        container.appendChild(detail);
-        container.appendChild(cartBtn);
+        container.appendChild(containerItem);
+        containerItem.appendChild(furniture_pic);
+        containerItem.appendChild(containerDetail);
+        containerDetail.appendChild(furniture_name);
+        containerDetail.appendChild(size);
+        containerDetail.appendChild(wood);
+        containerDetail.appendChild(detailLable);
+        containerDetail.appendChild(detail);
+        containerDetail.appendChild(price);
+        containerButton.appendChild(cartBtn);
+        containerItem.appendChild(containerButton);
 
         showIDlayer.appendChild(container);
 
@@ -124,20 +141,33 @@ function showDataCart(data){
     var keys = Object.keys(data);
     for(var i = 0; i < keys.length; i++){
         var container = document.createElement("div");
-        container.className = "col-lg-4 bg-warning p-5";
+        container.className = "row col-11 col-lg-12 bg-light mx-auto my-4 py-4 gx-4";
+        var containerQuantity = document.createElement("div");
+        containerQuantity.className = "col-2 col-lg-1 text-lg-center my-lg-auto";
+        var containerPic = document.createElement("div");
+        containerPic.className = "col-4 col-lg-2";
+        var containerDetail = document.createElement("div");
+        containerDetail.className = "col-6 col-lg-5 my-auto text-start ps-lg-2"
+        var blankSpace = document.createElement("div");
+        blankSpace.className = "col-6 col-lg-2";
+        var containerPrice = document.createElement("div");
+        containerPrice.className = "col-6 col-lg-2 mx-auto my-auto text-lg-end pt-4 p-lg-4"
 
         var furniture_pic = document.createElement("img");
+        furniture_pic.className = "img-fluid my-auto mx-auto";
         var furniture_name = document.createElement("p");
+        furniture_name.className = "boldText";
         var size = document.createElement("p");
         var wood = document.createElement("p");
-        var price = document.createElement("p");
+        var price = document.createElement("h5");
+        price.className = "boldText";
+        var detailLable = document.createElement("p");
+        detailLable.className = "mb-0 pb-0";
         var detail = document.createElement("p");
-        var inputQuantity = document.createElement("input");
-        inputQuantity.type = "number";
+        detail.className = "mb-0 pb-0";
+        var quantity = document.createElement("p");
         // inputQuantity.id = [data[keys[i]].FID];
-        inputQuantity.name = "inputQuantity";
-        inputQuantity.min = "1";
-        inputQuantity.max = "10";
+
         
         // var increaseQ = document.createElement("button");
         // increaseQ.className = "btnUpdate";
@@ -147,23 +177,31 @@ function showDataCart(data){
         // decreaseQ.id = [data[keys[i]].FID];
 
         furniture_pic.src = "furniturePic/" + data[keys[i]].furniture_pic;
-        furniture_name.innerHTML = "Name : " + data[keys[i]].furniture_name;
-        size.innerHTML = "Size : " + data[keys[i]].size + " ซม.";
-        wood.innerHTML = "Wood : " + data[keys[i]].wood;
-        price.innerHTML = "Price : " + data[keys[i]].price + " บาท";
-        detail.innerHTML = "Detail : " + data[keys[i]].detail;
-        inputQuantity.value = "1";
+        furniture_name.innerHTML = data[keys[i]].furniture_name;
+        size.innerHTML = "ขนาด : " + data[keys[i]].size + " ซม.";
+        wood.innerHTML = "เนื้อไม้ : " + data[keys[i]].wood;
+        price.innerHTML = data[keys[i]].price + " บาท";
+        detailLable.innerHTML = "รายละเอียดเพิ่มเติม :";
+        detail.innerHTML = data[keys[i]].detail;
+        quantity.innerHTML = data[keys[i]].quantity + " ชิ้น";
         // increaseQ.innerHTML = "+";
         // decreaseQ.innerHTML = "-";
 
-        container.appendChild(furniture_pic);
-        container.appendChild(furniture_name);
-        container.appendChild(size);
-        container.appendChild(wood);
-        container.appendChild(price);
-        container.appendChild(detail);
+        container.appendChild(containerQuantity);
+        containerQuantity.appendChild(quantity);
+        container.appendChild(containerPic);
+        containerPic.appendChild(furniture_pic)
+        container.appendChild(containerDetail);
+        containerDetail.appendChild(furniture_name);
+        containerDetail.appendChild(size);
+        containerDetail.appendChild(wood);
+        containerDetail.appendChild(detailLable);
+        containerDetail.appendChild(detail);
+        container.appendChild(blankSpace);
+        container.appendChild(containerPrice);
+        containerPrice.appendChild(price);
+
         // container.appendChild(decreaseQ);
-        container.appendChild(inputQuantity);
         // container.appendChild(increaseQ);
 
         showIDlayer.appendChild(container);
