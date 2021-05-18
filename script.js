@@ -7,6 +7,7 @@ function pageLoad(){
     getDataCabinet();
     getDataTable();
     getDataCart();
+    loginResult();
     // getBtnId();
 
 }
@@ -24,6 +25,22 @@ function pageLoad(){
 //     // console.log(btnToCart.length);
 // }
 
+// async function loginResult(){
+// 	const response = await fetch("\auth");
+// 	const content = await response.json();
+// 	showLogin(content);
+// }
+
+// function showData(data){
+//     var loginId = document.getElementById("loginBtn");
+//     var key = Object.keys(data);
+//     if(key != null){
+//         loginId.style.display = "none";
+//     }
+//     else{
+//         loginId.style.display = "block";
+//     }
+// }
 
 async function getDataChair(){
 	const response = await fetch("\showDBChair");
