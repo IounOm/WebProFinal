@@ -407,7 +407,20 @@ app.post("/deleteCatagories", async (req,res) => {
 });
 
 // adminOrderList.html
-
+app.get("/orderList", async (req,res) => {
+    let sql = `SELECT * FROM OPEN_HOUSE_IDEA.orders`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    console.log(result);
+    res.json(result);
+});
+app.get("/orderDetail", async (req,res) => {
+    let sql = `SELECT * FROM OPEN_HOUSE_IDEA.orders_detail`;
+    let result = await queryDB(sql);
+    result = Object.assign({},result);
+    // console.log(result);
+    res.json(result);
+});
 
  app.listen(port, hostname, () => {
     console.log(`Server running at   http://${hostname}:${port}/`);
