@@ -24,8 +24,14 @@
     font-size: 2rem;
 }
 
+.text-logo{
+    text-decoration: none;
+    color: black;
+}
+
 .login-container{
     margin-top: 10rem;
+    margin-bottom: 13rem;
 }
 
 .footer-fixer{
