@@ -56,4 +56,9 @@
     .navber-logo{
         padding-left: 1rem;
     }
+
+    .login-container{
+        margin-top: 2rem;
+        margin-bottom: 4rem;
+    }
 }
