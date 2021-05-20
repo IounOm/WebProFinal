@@ -120,8 +120,8 @@ app.post('/auth', async function(request, response) {
 	if (email && password) {
 		con.query('SELECT * FROM OPEN_HOUSE_IDEA.members WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
 			if (results.length > 0) {
-				request.session.loggedin = true;
-				request.session.email = email;
+				// request.session.loggedin = true;
+				// request.session.email = email;
 
                 // const changeResult = JSON.parse(result);
                 // let res = JSON.parse(JSON.stringify(result));
@@ -150,19 +150,24 @@ app.post('/auth', async function(request, response) {
 	}
 });
 
-app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.email + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
+// app.get('/home', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		response.send('Welcome back, ' + request.session.email + '!');
+// 	} else {
+// 		response.send('Please login to view this page!');
+// 	}
+// 	response.end();
+// });
+
+app.get("/checkSignIn", (req,res) => {
+    let result = req.cookies.UID;
+    console.log(result);
+    res.json(result);
 });
 
 app.get('/logout', (req,res) => {
     res.clearCookie('UID');
     res.clearCookie('email');
-    res.clearCookie('img');
     console.log("Log out");
     return res.redirect('login.html');
 })

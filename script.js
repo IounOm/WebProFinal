@@ -8,6 +8,7 @@ function pageLoad(){
     getDataTable();
     getDataCart();
     loginResult();
+    // checkSignIn();
     // getBtnId();
 
 }
@@ -41,7 +42,28 @@ function pageLoad(){
 //         loginId.style.display = "block";
 //     }
 // }
+///////////////////////////////////////////
+// สำหรับทำปุ่ม login logout
+// function checkSignIn(){
+//     const response = await fetch("\checkSignIn");
+// 	const content = await response.json();
+// 	checkLogin(content);
+// }
 
+// function checkLogin(data){
+//     let signIn = document.getElementById("signIn");
+//     let signOut = document.getElementById("signOut");
+//     let UID = Object.keys(data);
+//     if(UID != null){
+//         signIn .style.display = "none";
+//         signOut.style.display = "block";
+//     }
+//     else{
+//         signIn .style.display = "block";
+//         signOut.style.display = "none";
+//     }
+// }
+///////////////////////////////////////////
 async function getDataChair(){
 	const response = await fetch("\showDBChair");
 	const content = await response.json();
