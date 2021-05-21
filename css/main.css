@@ -38,6 +38,10 @@
     min-height: calc(100vh - 56px - 26px);
 }
 
+.copyrightColor{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .boldText{
     font-weight: bold;
 }
