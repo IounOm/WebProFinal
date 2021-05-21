@@ -159,18 +159,18 @@ app.post('/auth', async function(request, response) {
 // 	response.end();
 // });
 
-app.get("/checkSignIn", (req,res) => {
-    let result = req.cookies.UID;
-    console.log(result);
-    res.json(result);
-});
+// app.get("/checkSignIn", (req,res) => {
+//     let result = req.cookies.UID;
+//     console.log(result);
+//     res.json(result);
+// });
 
-app.get('/logout', (req,res) => {
-    res.clearCookie('UID');
-    res.clearCookie('email');
-    console.log("Log out");
-    return res.redirect('login.html');
-})
+// app.get('/logout', (req,res) => {
+//     res.clearCookie('UID');
+//     res.clearCookie('email');
+//     console.log("Log out");
+//     return res.redirect('login.html');
+// })
 
 ///////////////////////////////////////////////////////////
 // show data
